@@ -2,13 +2,16 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import bcrypt from "bcrypt";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-mongoose.connect("mongodb://127.0.0.1:27017/viNotesDB")
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log(err));
 
