@@ -35,9 +35,9 @@ const handleLogin = async () => {
    if (res.data.success) {
   localStorage.setItem("token", res.data.token);
 
-  // ✅ CALL onLogin HERE
-  onLogin("loggedInUser", res.data.isAdmin); 
-  // 👆 temporary id (since backend not sending userId)
+  
+  onLogin(res.data.userId, res.data.isAdmin); 
+  
 
   if (res.data.isAdmin) {
     const goAdmin = window.confirm(
