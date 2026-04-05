@@ -7,8 +7,13 @@ import Editor from "./components/Editor/Editor";
 import Dashboard from "./components/Dashboard/Dashboard";
 
 function App() {
-  const [userId, setUserId] = useState<string>("");
-  const [isAdminView, setIsAdminView] = useState<boolean>(false);
+  const [userId, setUserId] = useState<string>(
+  localStorage.getItem("userId") || ""
+);
+
+const [isAdminView, setIsAdminView] = useState<boolean>(
+  localStorage.getItem("isAdmin") === "true"
+);
 
   const handleLogin = (id: string, adminView: boolean) => {
     setUserId(id);
@@ -29,8 +34,13 @@ function App() {
 
       <Route
         path="/dashboard"
-        element={userId && isAdminView ? (<Dashboard />) : (<Navigate to="/" /> )}
-/>
+        element={
+    userId && isAdminView ? (
+      <Dashboard />
+    ) : (
+      <Navigate to="/" />
+    )
+  }     />
     </Routes>
   );
 }

@@ -36,7 +36,10 @@ const handleLogin = async () => {
   localStorage.setItem("token", res.data.token);
 
   
-  onLogin(res.data.userId, res.data.isAdmin); 
+  localStorage.setItem("userId", res.data.userId);
+localStorage.setItem("isAdmin", res.data.isAdmin);
+
+onLogin(res.data.userId, res.data.isAdmin);
   
 
   if (res.data.isAdmin) {

@@ -16,6 +16,7 @@ const Editor: React.FC<Props> = ({ userId }) => {
     if (text.trim() !== "") {
       try {
         await API.post("/save", {
+          userId,
           textContent: text,
           keystrokes,
           pasteCount,
@@ -32,7 +33,7 @@ const Editor: React.FC<Props> = ({ userId }) => {
 }, [text, keystrokes, pasteCount, userId]);
 
   useEffect(() => {
-  API.get("/my-note")
+  API.get(`/my-note?userId=${userId}`)
     .then((res) => {
       if (res.data.note) {
         setText(res.data.note.textContent);
@@ -41,12 +42,12 @@ const Editor: React.FC<Props> = ({ userId }) => {
       }
     })
     .catch(console.log);
-}, []);
+}, [userId]);
 
   return (
     <div>
       <h2>Editor ✍️ <button onClick={() => {
-  localStorage.removeItem("token");
+  localStorage.clear();
   window.location.href = "/";
 }}>
   Logout
