@@ -29,8 +29,8 @@ function App() {
 
       <Route
         path="/dashboard"
-        element={userId ? <Dashboard /> : <Navigate to="/" />}
-      />
+        element={userId && isAdminView ? (<Dashboard />) : (<Navigate to="/" /> )}
+/>
     </Routes>
   );
 }

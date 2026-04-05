@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "../../services/api";
+import { useNavigate } from "react-router-dom";
 
 type Note = {
   email: string;
@@ -9,6 +10,7 @@ type Note = {
 
 const Dashboard: React.FC = () => {
   const [notes, setNotes] = useState<Note[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     API.get("/notes")
@@ -16,15 +18,30 @@ const Dashboard: React.FC = () => {
       .catch((err) => console.log(err));
   }, []);
 
+  const handleLogout = () => {
+  localStorage.removeItem("token");
+  navigate("/");
+};
+
   const suspicious = notes.filter((n) => n.pasteCount > 0);
   const normal = notes.filter((n) => n.pasteCount === 0);
 
   return (
     <div style={{ padding: "30px", fontFamily: "Arial" }}>
       
-      <h2 style={{ textAlign: "center", marginBottom: "30px" }}>
-        📊 Admin Dashboard
-      </h2>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+  <h2>📊 Admin Dashboard</h2>
+
+  <button onClick={handleLogout} style={{
+    padding: "8px 15px",
+    backgroundColor: "black",
+    color: "white",
+    border: "none",
+    cursor: "pointer"
+  }}>
+    Logout
+  </button>
+</div>
 
       {/* ✅ Genuine Users */}
       <h3 style={{ color: "green" }}>🟢 Genuine Users</h3>
