@@ -26,7 +26,7 @@ export const saveNote = async (req: AuthRequest, res: Response) => {
 
     res.json({ success: true, message: "Saved" });
   } catch (err) {
-    console.log("SAVE ERROR 👉", err); // 👈 ADD THIS ALSO
+    console.log("SAVE ERROR 👉", err); 
     res.status(500).json({ success: false });
   }
 };
@@ -47,7 +47,7 @@ export const getMyNote = async (req: AuthRequest, res: Response) => {
       note: note || null,
     });
   } catch (err) {
-    console.log("FETCH ERROR 👉", err); // 👈 ADD THIS
+    console.log("FETCH ERROR 👉", err); 
     res.status(500).json({ success: false });
   }
 };
