@@ -1,32 +1,35 @@
-import { useState, useEffect } from "react";
-import API from "../../services/api";
+import React, { useState } from "react";
 
-type Props = {
-  userId: string;
-};
-
-const Editor: React.FC<Props> = ({ userId }) => {
-  
-
-  useEffect(() => {
-  API.get(`/my-note?userId=${userId}`)
-    .then((res) => {
-      if (res.data.note) {
-        setText(res.data.note.textContent);
-        setKeystrokes(res.data.note.keystrokes);
-        setPasteCount(res.data.note.pasteCount);
-      }
-    })
-    .catch(console.log);
-}, [userId]);
+const Editor = () => {
+  const [text, setText] = useState<string>("");
+  const [keystrokes, setKeystrokes] = useState<number>(0);
 
   return (
     <div>
-      <h2>Editor ✍️ <button>
-  Logout
-</button></h2>
+      <h2>
+        Editor ✍️
+        <button
+          onClick={() => {
+            localStorage.clear();
+            window.location.href = "/";
+          }}
+        >
+          Logout
+        </button>
+      </h2>
 
-      
+      <textarea
+        rows={10}
+        cols={50}
+        value={text}
+        onChange={(e) => {
+          setText(e.target.value);
+          setKeystrokes((k) => k + 1);
+        }}
+      />
+
+      <p>Characters: {text.length}</p>
+      <p>Keystrokes: {keystrokes}</p>
     </div>
   );
 };
