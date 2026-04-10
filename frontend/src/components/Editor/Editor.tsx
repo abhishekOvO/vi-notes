@@ -3,6 +3,30 @@ import React, { useState } from "react";
 const Editor = () => {
   const [text, setText] = useState<string>("");
   const [keystrokes, setKeystrokes] = useState<number>(0);
+  
+  const [lastSaved, setLastSaved] = useState<string>("Not saved yet");
+
+  useEffect(() => {
+  const interval = setInterval(async () => {
+    if (text.trim() !== "") {
+      try {
+        await API.post("/save", {
+          userId,
+          textContent: text,
+          keystrokes,
+          pasteCount,
+        });
+
+        setLastSaved(new Date().toLocaleTimeString());
+      } catch (err) {
+        console.log("SAVE ERROR 👉", err);
+      }
+    }
+  }, 10000);
+
+  return () => clearInterval(interval);
+}, [text, keystrokes, pasteCount, userId]);
+
 
   return (
     <div>
@@ -26,10 +50,17 @@ const Editor = () => {
           setText(e.target.value);
           setKeystrokes((k) => k + 1);
         }}
+        onChange={(e) => {
+          setText(e.target.value);
+          setKeystrokes((k) => k + 1);
+        }}
+
       />
 
       <p>Characters: {text.length}</p>
       <p>Keystrokes: {keystrokes}</p>
+      <p>Last Saved: {lastSaved}</p>
+
     </div>
   );
 };
