@@ -1,6 +1,11 @@
 import React, { useState, useEffect} from "react";
+import API from "../../services/api";
 
-const Editor = () => {
+type Props = {
+  userId: string;
+};
+
+const Editor: React.FC<Props> = ({ userId }) => {
   const [text, setText] = useState<string>("");
   const [keystrokes, setKeystrokes] = useState<number>(0);
   const [pasteCount, setPasteCount] = useState<number>(0);
@@ -26,6 +31,19 @@ const Editor = () => {
 
   return () => clearInterval(interval);
 }, [text, keystrokes, pasteCount, userId]);
+
+
+  useEffect(() => {
+  API.get(`/my-note?userId=${userId}`)
+    .then((res) => {
+      if (res.data.note) {
+        setText(res.data.note.textContent);
+        setKeystrokes(res.data.note.keystrokes);
+        setPasteCount(res.data.note.pasteCount);
+      }
+    })
+    .catch(console.log);
+}, [userId]);
 
 
   return (
