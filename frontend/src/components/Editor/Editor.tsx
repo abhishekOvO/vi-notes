@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 
 const Editor = () => {
   const [text, setText] = useState<string>("");
   const [keystrokes, setKeystrokes] = useState<number>(0);
-  
+  const [pasteCount, setPasteCount] = useState<number>(0);
   const [lastSaved, setLastSaved] = useState<string>("Not saved yet");
 
   useEffect(() => {
@@ -50,15 +50,16 @@ const Editor = () => {
           setText(e.target.value);
           setKeystrokes((k) => k + 1);
         }}
-        onChange={(e) => {
-          setText(e.target.value);
-          setKeystrokes((k) => k + 1);
+        onPaste={() => {
+          setPasteCount((p) => p + 1);
+          alert("⚠️ Pasting detected!");
         }}
 
       />
 
       <p>Characters: {text.length}</p>
       <p>Keystrokes: {keystrokes}</p>
+      <p>Paste Count: {pasteCount}</p>
       <p>Last Saved: {lastSaved}</p>
 
     </div>
